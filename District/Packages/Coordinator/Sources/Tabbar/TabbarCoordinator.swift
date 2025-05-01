@@ -62,7 +62,9 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
     // --------------------------------------------------------------------
     // MARK: TabbarCoordinatorType properties
     // --------------------------------------------------------------------
-    
+
+    private var coordinatorStyle: TabbarCoordinatorStyle
+
     /// The presentation style for transitioning between pages.
     private var presentationStyle: TransitionPresentationStyle
     
@@ -87,11 +89,13 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
         pages: [Page],
         currentPage: Page,
         presentationStyle: TransitionPresentationStyle = .sheet,
+        coordinatorStyle: TabbarCoordinatorStyle = .default,
         customView: (() -> Page.View?)? = nil
     ) {
         self.router = .init()
         self.uuid = "\(NSStringFromClass(type(of: self))) - \(UUID().uuidString)"
         self.presentationStyle = presentationStyle
+        self.coordinatorStyle = coordinatorStyle
         self.currentPage = currentPage
         self.customView = customView
         self.pages = pages
@@ -110,8 +114,12 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
     open func start(animated: Bool = true) async {
         setupPages(pages, currentPage: currentPage)
         
-        let cView = customView?() ?? TabbarCoordinatorView(dataSource: self, currentPage: currentPage)
-        
+        let cView = customView?() ?? TabbarCoordinatorView(
+            dataSource: self,
+            currentPage: currentPage,
+            style: coordinatorStyle
+        )
+
         await startFlow(
             route: DefaultRoute(presentationStyle: presentationStyle) { cView },
             transitionStyle: presentationStyle,
