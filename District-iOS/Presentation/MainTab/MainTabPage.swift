@@ -19,10 +19,6 @@ public enum MainTabPage: CaseIterable {
 }
 
 extension MainTabPage: TabbarPage {
-    public var title: (any View) {
-        Text("")
-    }
-
     public var icon: (any View) {
         switch self {
         case .home: return Asset.home.swiftUIImage.applyDefaultIconStyle()
@@ -70,6 +66,5 @@ private extension Image {
             .renderingMode(.template)
             .resizable()
             .frame(width: 24, height: 24)
-            .foregroundStyle(Color.textSecondaryColor)
     }
 }

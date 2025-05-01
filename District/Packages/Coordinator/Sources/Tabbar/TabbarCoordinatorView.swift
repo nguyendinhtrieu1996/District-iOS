@@ -57,9 +57,32 @@ struct TabbarCoordinatorView<DataSource: TabbarCoordinatorType>: View {
     // ---------------------------------------------------------------------
     
     public var body: some View {
-        TabView(selection: $dataSource.currentPage){
-            ForEach(pages, id: \.id, content: tabBarItem)
+        VStack(spacing: 0) {
+            TabView(selection: $dataSource.currentPage) {
+                ForEach(pages, id: \.id) { page in
+                    if let item = dataSource.getCoordinator(with: page.position) {
+                        AnyView(item.getView())
+                            .tag(page)
+                    }
+                }
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+
+            if let dividerStyle = style.dividerStyle {
+                Divider()
+                    .background(dividerStyle.color)
+                    .frame(height: dividerStyle.height)
+            }
+
+            CustomTabBar(
+                pages: pages,
+                badges: badges,
+                selectedPage: $dataSource.currentPage,
+                style: style
+            )
+            .padding(.top, 16)
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .onChange(of: dataSource.pages) { pages in
             self.pages = pages
             badges = pages.map { (nil, $0) }
@@ -75,27 +98,11 @@ struct TabbarCoordinatorView<DataSource: TabbarCoordinatorType>: View {
             pages = dataSource.pages
             badges = pages.map { (nil, $0) }
         }
-        .onAppear(perform: setupTabBarAppearance)
     }
     
     // ---------------------------------------------------------------------
     // MARK: Helper funcs
     // ---------------------------------------------------------------------
-
-    @ViewBuilder
-    func tabBarItem(with page: Page) -> some View {
-        if let item = dataSource.getCoordinator(with: page.position) {
-            AnyView( item.getView() )
-                .tabItem {
-                    Label(
-                        title: { AnyView(page.title) },
-                        icon: { AnyView(page.icon) }
-                    )
-                }
-                .badge(badge(of: page)?.value)
-                .tag(page)
-        }
-    }
 
     private func badge(of page: Page) -> BadgeItem? {
         guard let index = getBadgeIndex(page: page) else {
@@ -106,76 +113,5 @@ struct TabbarCoordinatorView<DataSource: TabbarCoordinatorType>: View {
 
     private func getBadgeIndex(page: Page) -> Int? {
         badges.firstIndex(where: { $0.1 == page })
-    }
-
-    // ---------------------------------------------------------------------
-    // MARK: Custom Tabbar Appearance
-    // ---------------------------------------------------------------------
-
-    private func setupTabBarAppearance() {
-        configureTabBarAppearance()
-        if let dividerStyle = style.dividerStyle {
-            addCustomDivider(style: dividerStyle)
-        }
-    }
-    
-    private func configureTabBarAppearance() {
-        let standardAppearance = UITabBarAppearance()
-        standardAppearance.configureWithOpaqueBackground()
-        standardAppearance.backgroundColor = UIColor.systemBackground
-        
-        let itemAppearance = UITabBarItemAppearance()
-        let itemStyle = style.itemStyle
-        itemAppearance.normal.iconColor = UIColor(itemStyle.color)
-        itemAppearance.selected.iconColor = UIColor(itemStyle.tintColor)
-
-        standardAppearance.inlineLayoutAppearance = itemAppearance
-        standardAppearance.stackedLayoutAppearance = itemAppearance
-        standardAppearance.compactInlineLayoutAppearance = itemAppearance
-        
-        UITabBar.appearance().standardAppearance = standardAppearance
-        if #available(iOS 15.0, *) {
-            UITabBar.appearance().scrollEdgeAppearance = standardAppearance
-        }
-    }
-    
-    private func addCustomDivider(style: TabbarCoordinatorStyle.DividerStyle) {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first(where: { $0.isKeyWindow }),
-              let rootViewController = window.rootViewController else {
-            return
-        }
-        
-        let tabBarController = findTabBarController(from: rootViewController)
-        guard let tabBar = tabBarController?.tabBar else { return }
-        
-        if !(tabBar.layer.sublayers?.contains(where: { $0.name == customDividerName }) ?? false) {
-            let divider = createDividerLayer(for: tabBar, style: style)
-            tabBar.layer.addSublayer(divider)
-        }
-    }
-    
-    private func findTabBarController(from viewController: UIViewController) -> UITabBarController? {
-        if let tabBar = viewController as? UITabBarController {
-            return tabBar
-        }
-        
-        var currentVC = viewController
-        while let presentedVC = currentVC.presentedViewController {
-            if let tabBar = presentedVC as? UITabBarController {
-                return tabBar
-            }
-            currentVC = presentedVC
-        }
-        
-        return nil
-    }
-    
-    private func createDividerLayer(for tabBar: UITabBar, style: TabbarCoordinatorStyle.DividerStyle) -> CALayer {
-        let divider = CALayer()
-        divider.name = customDividerName
-        divider.backgroundColor = UIColor(style.color).cgColor
-        divider.frame = CGRect(x: 0, y: 0, width: tabBar.bounds.width, height: style.height)
-        return divider
     }
 }

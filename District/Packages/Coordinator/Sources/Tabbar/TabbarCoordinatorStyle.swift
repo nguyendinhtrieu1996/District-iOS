@@ -9,17 +9,17 @@ import SwiftUI
 
 public struct TabbarCoordinatorStyle {
     public let itemStyle: TabItemStyle
+    public let badgeStyle: BadgeStyle
     public let dividerStyle: DividerStyle?
-    public let isEnableBadgeNumber: Bool
 
     public init(
         itemStyle: TabItemStyle,
-        dividerStyle: DividerStyle?,
-        isEnableBadgeNumber: Bool
+        badgeStyle: BadgeStyle,
+        dividerStyle: DividerStyle?
     ) {
         self.itemStyle = itemStyle
+        self.badgeStyle = badgeStyle
         self.dividerStyle = dividerStyle
-        self.isEnableBadgeNumber = isEnableBadgeNumber
     }
 }
 
@@ -34,6 +34,27 @@ public extension TabbarCoordinatorStyle {
         ) {
             self.color = color
             self.tintColor = tintColor
+        }
+    }
+}
+
+public extension TabbarCoordinatorStyle {
+    struct BadgeStyle {
+        public let textColor: Color
+        public let backgroundColor: Color
+        public let font: Font
+        public let cornerRadius: CGFloat
+
+        public init(
+            textColor: Color,
+            backgroundColor: Color,
+            font: Font,
+            cornerRadius: CGFloat
+        ) {
+            self.textColor = textColor
+            self.backgroundColor = backgroundColor
+            self.font = font
+            self.cornerRadius = cornerRadius
         }
     }
 }
@@ -57,8 +78,13 @@ public extension TabbarCoordinatorStyle {
                 color: .gray,
                 tintColor: .black
             ),
-            dividerStyle: nil,
-            isEnableBadgeNumber: true
+            badgeStyle: .init(
+                textColor: .white,
+                backgroundColor: .red,
+                font: .system(size: 12, weight: .bold),
+                cornerRadius: 3
+            ),
+            dividerStyle: nil
         )
     }
 }

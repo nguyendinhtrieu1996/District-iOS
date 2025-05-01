@@ -14,6 +14,7 @@ public extension Color {
     static let backgroundGrouped = Color(hex: "F2F1F5")
     static let paletteColor = Color(hex: "F12858")
     static let appOrange = Color(hex: "E5761E")
+    static let borderSeparator = Color(hex: "E9E7EF")
 }
 
 public extension Color {

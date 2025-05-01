@@ -95,7 +95,7 @@ public enum FontStyle {
         case .captionSmallStrong: return FontSettings(fontSize: 12, fontWeight: .bold)
         case .captionExtraExtraSmall: return FontSettings(fontSize: 10, fontWeight: .regular)
         case .captionExtraExtraSmallSemiStrong: return FontSettings(fontSize: 10, fontWeight: .semibold)
-        case .tinyMedium: return FontSettings(fontSize: 11, fontWeight: .medium)
+        case .tinyMedium: return FontSettings(fontSize: 11, fontWeight: .bold)
         }
     }
 

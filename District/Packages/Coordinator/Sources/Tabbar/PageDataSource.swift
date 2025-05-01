@@ -36,10 +36,6 @@ public protocol PageDataSource: SCHashable {
     // MARK: Properties
     // ---------------------------------------------------------
     
-    /// The title view for the page.
-    @ViewBuilder
-    var title: View  { get }
-    
     /// The icon view for the page.
     @ViewBuilder
     var icon: View { get }
