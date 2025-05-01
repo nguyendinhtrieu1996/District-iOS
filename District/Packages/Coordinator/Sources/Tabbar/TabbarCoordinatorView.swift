@@ -81,7 +81,37 @@ struct TabbarCoordinatorView<DataSource: TabbarCoordinatorType>: View {
     // ---------------------------------------------------------------------
     // MARK: Helper funcs
     // ---------------------------------------------------------------------
-    
+
+    @ViewBuilder
+    func tabBarItem(with page: Page) -> some View {
+        if let item = dataSource.getCoordinator(with: page.position) {
+            AnyView( item.getView() )
+                .tabItem {
+                    Label(
+                        title: { AnyView(page.title) },
+                        icon: { AnyView(page.icon) }
+                    )
+                }
+                .badge(badge(of: page)?.value)
+                .tag(page)
+        }
+    }
+
+    private func badge(of page: Page) -> BadgeItem? {
+        guard let index = getBadgeIndex(page: page) else {
+            return nil
+        }
+        return badges[index]
+    }
+
+    private func getBadgeIndex(page: Page) -> Int? {
+        badges.firstIndex(where: { $0.1 == page })
+    }
+
+    // ---------------------------------------------------------------------
+    // MARK: Custom Tabbar Appearance
+    // ---------------------------------------------------------------------
+
     private func setupTabBarAppearance() {
         configureTabBarAppearance()
         if let dividerStyle = style.dividerStyle {
@@ -147,31 +177,5 @@ struct TabbarCoordinatorView<DataSource: TabbarCoordinatorType>: View {
         divider.backgroundColor = UIColor(style.color).cgColor
         divider.frame = CGRect(x: 0, y: 0, width: tabBar.bounds.width, height: style.height)
         return divider
-    }
-    
-    @ViewBuilder
-    func tabBarItem(with page: Page) -> some View {
-        if let item = dataSource.getCoordinator(with: page.position) {
-            AnyView( item.getView() )
-                .tabItem {
-                    Label(
-                        title: { AnyView(page.title) },
-                        icon: { AnyView(page.icon) }
-                    )
-                }
-                .badge(badge(of: page)?.value)
-                .tag(page)
-        }
-    }
-    
-    private func badge(of page: Page) -> BadgeItem? {
-        guard let index = getBadgeIndex(page: page) else {
-            return nil
-        }
-        return badges[index]
-    }
-    
-    private func getBadgeIndex(page: Page) -> Int? {
-        badges.firstIndex(where: { $0.1 == page })
     }
 }
