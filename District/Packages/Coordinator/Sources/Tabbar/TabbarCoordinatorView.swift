@@ -80,7 +80,7 @@ struct TabbarCoordinatorView<DataSource: TabbarCoordinatorType>: View {
                 selectedPage: $dataSource.currentPage,
                 style: style
             )
-            .padding(.top, 16)
+            .padding(.top, 14)
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .onChange(of: dataSource.pages) { pages in

@@ -12,6 +12,18 @@ import Home
 public final class DefaultHomeCoordinator: Coordinator<HomeRoute> {
 
     public override func start(animated: Bool = true) async {
-        await startFlow(route: .home)
+        await startFlow(route: .home(coordinator: self))
+    }
+}
+
+// MARK: - HomeCoordinator
+
+extension DefaultHomeCoordinator: HomeCoordinator {
+    public func navigateToNotification() async {
+
+    }
+
+    public func navigateToCart() async {
+
     }
 }

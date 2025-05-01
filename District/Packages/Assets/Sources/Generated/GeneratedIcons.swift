@@ -31,6 +31,7 @@ public enum Asset {
   public static let listings = ImageAsset(name: "listings")
   public static let live = ImageAsset(name: "live")
   public static let marketplace = ImageAsset(name: "marketplace")
+  public static let niknak = ImageAsset(name: "niknak")
   public static let notification = ImageAsset(name: "notification")
   public static let profile = ImageAsset(name: "profile")
   public static let search = ImageAsset(name: "search")
@@ -49,6 +50,7 @@ public enum Asset {
     listings,
     live,
     marketplace,
+    niknak,
     notification,
     profile,
     search,

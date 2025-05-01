@@ -10,7 +10,7 @@ import Coordinator
 import Home
 
 public enum HomeRoute: RouteType {
-    case home
+    case home(coordinator: HomeCoordinator)
     case noifications
     case cart
     case channels
@@ -30,8 +30,9 @@ public enum HomeRoute: RouteType {
 
     public var view: Body {
         switch self {
-        case .home:
-            return HomeView()
+        case .home(let coordinator):
+            let viewModel = HomeViewModel(coordinator: coordinator)
+            return HomeView(viewModel: viewModel)
         default:
             return EmptyView()
         }

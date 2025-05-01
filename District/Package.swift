@@ -36,19 +36,12 @@ let package = Package(
             targets: ["Profile"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SwiftGen/SwiftGenPlugin", from: "6.6.0")
+        .package(url: "https://github.com/SwiftGen/SwiftGenPlugin", from: "6.6.0"),
+        .package(url: "https://github.com/pointfreeco/swift-perception.git", from: "1.3.5")
     ],
     targets: [
         .target(
             name: "DesignSystem",
-            dependencies: [
-                "Assets",
-                "Home",
-                "Search",
-                "DirectChat",
-                "Store",
-                "Profile"
-            ],
             path: "Packages/DesignSystem/Sources"
         ),
         .target(
@@ -65,22 +58,47 @@ let package = Package(
         ),
         .target(
             name: "Home",
+            dependencies: [
+                .product(name: "Perception", package: "swift-perception"),
+                .target(name: "DesignSystem"),
+                .target(name: "Assets")
+            ],
             path: "Packages/Home/Sources"
         ),
         .target(
             name: "Search",
+            dependencies: [
+                .product(name: "Perception", package: "swift-perception"),
+                .target(name: "DesignSystem"),
+                .target(name: "Assets")
+            ],
             path: "Packages/Search/Sources"
         ),
         .target(
             name: "DirectChat",
+            dependencies: [
+                .product(name: "Perception", package: "swift-perception"),
+                .target(name: "DesignSystem"),
+                .target(name: "Assets")
+            ],
             path: "Packages/DirectChat/Sources"
         ),
         .target(
             name: "Store",
+            dependencies: [
+                .product(name: "Perception", package: "swift-perception"),
+                .target(name: "DesignSystem"),
+                .target(name: "Assets")
+            ],
             path: "Packages/Store/Sources"
         ),
         .target(
             name: "Profile",
+            dependencies: [
+                .product(name: "Perception", package: "swift-perception"),
+                .target(name: "DesignSystem"),
+                .target(name: "Assets")
+            ],
             path: "Packages/Profile/Sources"
         )
     ]
