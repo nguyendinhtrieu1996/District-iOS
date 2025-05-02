@@ -1,24 +1,12 @@
-//
-//  HomeRoute.swift
-//  District-iOS
-//
-//  Created by Trieu Nguyen on 1/5/25.
-//
-
 import SwiftUI
 import Coordinator
-import Home
-import Notification
 import Cart
 
-public enum HomeRoute: RouteType {
-    case home(coordinator: HomeCoordinator)
+public enum CartRoute: RouteType {
     case cart(coordinator: CartCoordinator)
 
     public var presentationStyle: TransitionPresentationStyle {
         switch self {
-        case .home:
-            return .push
         case .cart:
             return .push
         }
@@ -26,13 +14,9 @@ public enum HomeRoute: RouteType {
 
     public var view: Body {
         switch self {
-        case .home(let coordinator):
-            let viewModel = HomeViewModel(coordinator: coordinator)
-            return HomeView(viewModel: viewModel)
-
         case .cart(let coordinator):
             let viewModel = CartViewModel(coordinator: coordinator)
             return CartView(viewModel: viewModel)
         }
     }
-}
+} 

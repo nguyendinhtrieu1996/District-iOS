@@ -24,8 +24,10 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 public enum Asset {
   public static let cart = ImageAsset(name: "cart")
   public static let chat = ImageAsset(name: "chat")
+  public static let chevronLeft = ImageAsset(name: "chevronLeft")
   public static let chevronDown = ImageAsset(name: "chevron_down")
   public static let chevronRight = ImageAsset(name: "chevron_right")
+  public static let close = ImageAsset(name: "close")
   public static let hashtag = ImageAsset(name: "hashtag")
   public static let home = ImageAsset(name: "home")
   public static let listings = ImageAsset(name: "listings")
@@ -43,8 +45,10 @@ public enum Asset {
   public static let allImages: [ImageAsset] = [
     cart,
     chat,
+    chevronLeft,
     chevronDown,
     chevronRight,
+    close,
     hashtag,
     home,
     listings,

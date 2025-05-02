@@ -33,7 +33,16 @@ let package = Package(
             targets: ["Store"]),
         .library(
             name: "Profile",
-            targets: ["Profile"])
+            targets: ["Profile"]),
+        .library(
+            name: "Notification",
+            targets: ["Notification"]),
+        .library(
+            name: "ProductDetails",
+            targets: ["ProductDetails"]),
+        .library(
+            name: "Cart",
+            targets: ["Cart"])
     ],
     dependencies: [
         .package(url: "https://github.com/SwiftGen/SwiftGenPlugin", from: "6.6.0"),
@@ -100,6 +109,33 @@ let package = Package(
                 .target(name: "Assets")
             ],
             path: "Packages/Profile/Sources"
+        ),
+        .target(
+            name: "Notification",
+            dependencies: [
+                .product(name: "Perception", package: "swift-perception"),
+                .target(name: "DesignSystem"),
+                .target(name: "Assets")
+            ],
+            path: "Packages/Notification/Sources"
+        ),
+        .target(
+            name: "ProductDetails",
+            dependencies: [
+                .product(name: "Perception", package: "swift-perception"),
+                .target(name: "DesignSystem"),
+                .target(name: "Assets")
+            ],
+            path: "Packages/ProductDetails/Sources"
+        ),
+        .target(
+            name: "Cart",
+            dependencies: [
+                .product(name: "Perception", package: "swift-perception"),
+                .target(name: "DesignSystem"),
+                .target(name: "Assets")
+            ],
+            path: "Packages/Cart/Sources"
         )
     ]
 )

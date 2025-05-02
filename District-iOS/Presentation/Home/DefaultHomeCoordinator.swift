@@ -8,6 +8,7 @@
 import SwiftUI
 import Coordinator
 import Home
+import Cart
 
 public final class DefaultHomeCoordinator: Coordinator<HomeRoute> {
 
@@ -20,10 +21,11 @@ public final class DefaultHomeCoordinator: Coordinator<HomeRoute> {
 
 extension DefaultHomeCoordinator: HomeCoordinator {
     public func navigateToNotification() async {
-
+        await navigate(to: DefaultNotificationCoordinator(), presentationStyle: .fullScreenCover)
     }
 
     public func navigateToCart() async {
-
+        let cartCoordinator = DefaultCartCoordinator()
+        await router.navigate(to: .cart(coordinator: cartCoordinator))
     }
 }
