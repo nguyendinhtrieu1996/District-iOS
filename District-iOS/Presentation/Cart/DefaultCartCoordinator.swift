@@ -12,5 +12,5 @@ public final class DefaultCartCoordinator: Coordinator<CartRoute> {
 // MARK: - CartCoordinator
 
 extension DefaultCartCoordinator: CartCoordinator {
-    // Implement any cart-specific navigation methods here
+
 } 

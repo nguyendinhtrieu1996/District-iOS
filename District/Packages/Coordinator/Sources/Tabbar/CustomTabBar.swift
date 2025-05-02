@@ -33,7 +33,7 @@ struct CustomTabBar<Page: TabbarPage>: View {
     }
 } 
 
-struct TabButtonStyle: ButtonStyle {
+private struct TabButtonStyle: ButtonStyle {
     let highlighted: Bool
     @Binding var isAnimated: Bool
 
