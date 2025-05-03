@@ -8,4 +8,8 @@ public final class CartViewModel {
     public init(coordinator: CartCoordinator? = nil) {
         self.coordinator = coordinator
     }
-} 
+
+    func navigateBack() async {
+        await coordinator?.navigateBack()
+    }
+}

@@ -14,9 +14,22 @@ public struct CartView: View {
         VStack {
             Text("Cart View")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.red)
         }
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    Task { await viewModel.navigateBack() }
+                } label: {
+                    Asset.chevronLeft.swiftUIImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                }
+            }
+
+            ToolbarItem(placement: .principal) {
                 Text("Cart")
                     .font(.titleSmall)
                     .foregroundColor(.textPrimaryColor)

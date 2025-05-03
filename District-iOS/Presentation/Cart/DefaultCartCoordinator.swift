@@ -12,5 +12,7 @@ public final class DefaultCartCoordinator: Coordinator<CartRoute> {
 // MARK: - CartCoordinator
 
 extension DefaultCartCoordinator: CartCoordinator {
-
-} 
+    public func navigateBack() async {
+        await finishFlow()
+    }
+}

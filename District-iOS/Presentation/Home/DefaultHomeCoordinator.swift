@@ -25,7 +25,14 @@ extension DefaultHomeCoordinator: HomeCoordinator {
     }
 
     public func navigateToCart() async {
-        let cartCoordinator = DefaultCartCoordinator()
-        await router.navigate(to: .cart(coordinator: cartCoordinator))
+        await router.navigate(to: .cart(coordinator: self))
+    }
+}
+
+// MARK: - CartCoordinator
+
+extension DefaultHomeCoordinator: CartCoordinator {
+    public func navigateBack() async {
+        await router.pop(animated: true)
     }
 }
