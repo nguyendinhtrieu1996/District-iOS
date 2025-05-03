@@ -15,6 +15,7 @@ struct District_iOSApp: App {
     var body: some Scene {
         WindowGroup {
             mainTabCoordinator.getView()
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

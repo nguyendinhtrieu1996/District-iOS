@@ -26,7 +26,6 @@ public struct NotificationView: View {
                     .cornerRadius(8)
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {

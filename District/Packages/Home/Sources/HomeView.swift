@@ -11,20 +11,17 @@ public struct HomeView: View {
     }
 
     public var body: some View {
-        NavigationStack {
-            VStack {
-                Text("Home View")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        VStack {
+            Text("Home View")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                navigationTitle
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    navigationTitle
-                }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    navigationTrailingItems
-                }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                navigationTrailingItems
             }
         }
     }
