@@ -44,7 +44,6 @@ private extension HomeView {
                 .font(.bodySmall)
                 .foregroundColor(.textPrimaryColor)
         }
-        .padding(.leading, 18)
     }
     
     var navigationTrailingItems: some View {

@@ -66,7 +66,7 @@ struct TabbarCoordinatorView<DataSource: TabbarCoordinatorType>: View {
                     }
                 }
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
+            .tabViewStyle(DefaultTabViewStyle())
 
             if let dividerStyle = style.dividerStyle {
                 Divider()
