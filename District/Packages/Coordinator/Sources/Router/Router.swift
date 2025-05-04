@@ -111,7 +111,7 @@ public class Router<Route: RouteType>: ObservableObject, RouterType {
     ///
     /// - Parameters:
     ///   - animated: A boolean value indicating whether to animate the pop action.
-    @MainActor public func pop(animated: Bool) async -> Void {
+    @MainActor public func pop(animated: Bool = true) async -> Void {
         await runActionWithAnimation(animated) { [weak self] in
             return { self?.handlePopAction() }
         }
@@ -184,25 +184,10 @@ public class Router<Route: RouteType>: ObservableObject, RouterType {
     ///   - animated: A boolean value indicating whether to animate the cleanup process.
     ///   - withMainView: A boolean value indicating whether to clean the main view.
     @MainActor public func clean(animated: Bool, withMainView: Bool = true) async -> Void {
-        await popToRoot(animated: false)
+        await popToRoot(animated: animated)
         sheetCoordinator = .init()
         
         if withMainView { mainView = nil }
-    }
-    
-    /// Restarts the current view or coordinator, optionally animating the restart.
-    ///
-    /// - Parameters:
-    ///   - animated: A boolean value indicating whether to animate the restart action.
-    @MainActor public func restart(animated: Bool) async -> Void {
-        if sheetCoordinator.items.isEmpty {
-            await popToRoot(animated: animated)
-        } else {
-            async let _ = await popToRoot(animated: false)
-            await sheetCoordinator.clean(animated: animated)
-            
-            sheetCoordinator = .init()
-        }
     }
     
     /// Presents a sheet with a specified item.

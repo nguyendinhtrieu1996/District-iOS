@@ -58,10 +58,10 @@ public protocol CoordinatorType: SCHashable, ObservableObject {
     var tagId: String? { get set }
     
     /// The parent coordinator, if any, to which this coordinator is a child.
-    var parent: TCoordinatorType! { get set }
+    var parent: TCoordinatorType? { get set }
     
     /// An array of child coordinators associated with this coordinator.
-    var children: [TCoordinatorType] { get set }
+    var children: [ChildCoordinator] { get set }
     
     /// The router responsible for navigation within the coordinator.
     var router: Router<Route> { get set }

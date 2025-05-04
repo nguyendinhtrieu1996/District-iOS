@@ -1,13 +1,14 @@
 import SwiftUI
+import Perception
 
 public struct DirectChatView: View {
-    public init() {}
+    @Perception.Bindable private var viewModel: DirectChatViewModel
+
+    public init(viewModel: DirectChatViewModel) {
+        self.viewModel = viewModel
+    }
     
     public var body: some View {
         Text("Direct Chat View")
     }
 }
-
-#Preview {
-    DirectChatView()
-} 

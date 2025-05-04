@@ -88,7 +88,9 @@ public protocol TabbarCoordinatorType: ObservableObject {
     /// - Returns: The coordinator that corresponds to the selected tab.
     /// - Throws: An error if the selected coordinator cannot be determined.
     func getCoordinatorSelected() throws -> (any CoordinatorType)
-    
+
+    func popToRoot(animated: Bool) async
+
     @MainActor func clean() async
 }
 

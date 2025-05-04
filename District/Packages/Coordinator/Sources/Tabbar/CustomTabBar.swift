@@ -5,13 +5,15 @@ struct CustomTabBar<Page: TabbarPage>: View {
     let badges: [(value: String?, page: Page)]
     @Binding var selectedPage: Page
     let style: TabbarCoordinatorStyle
-    
+    let onSelect: ((Page) -> Void)?
+
     var body: some View {
         HStack {
             ForEach(pages, id: \.id) { page in
                 let isSected = selectedPage == page
                 Button(action: {
                     selectedPage = page
+                    onSelect?(page)
                 }) {
                     CustomTabBarItem(
                         icon: AnyView(page.icon),

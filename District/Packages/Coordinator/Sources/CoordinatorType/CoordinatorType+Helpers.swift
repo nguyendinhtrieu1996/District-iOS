@@ -71,7 +71,7 @@ extension CoordinatorType {
         } else if let value = value, let tabCoordinator = getTabbarCoordinable(value) {
             return try topCoordinator(pCoodinator: try tabCoordinator.getCoordinatorSelected())
         } else {
-            var last = value?.children.last
+            var last = value?.children.last?.coordinator
             return try getDeepCoordinator(from: &last)
         }
     }
@@ -81,7 +81,7 @@ extension CoordinatorType {
     /// - Parameters:
     ///   - coordinator: The child coordinator to be removed.
     func removeChild(coordinator : TCoordinatorType) async {
-        guard let index = children.firstIndex(where: {$0.uuid == coordinator.uuid}) else {
+        guard let index = children.firstIndex(where: {$0.coordinator.uuid == coordinator.uuid}) else {
             return
         }
         children.remove(at: index)
@@ -95,11 +95,11 @@ extension CoordinatorType {
     func removeChildren(animated: Bool = false) async {
         guard let first = children.first else { return }
         
-        if let parent = first.parent as? (any TabbarCoordinatable) {
-            parent.setCurrentPage(with: first)
+        if let parent = first.coordinator.parent as? (any TabbarCoordinatable) {
+            parent.setCurrentPage(with: first.coordinator)
         }
         
-        await first.emptyCoordinator(animated: animated)
+        await first.coordinator.emptyCoordinator(animated: animated)
         await removeChildren()
     }
     
@@ -116,8 +116,8 @@ extension CoordinatorType {
     ///
     /// - Parameters:
     ///   - coordinator: The child coordinator to be started.
-    func startChildCoordinator(_ coordinator: TCoordinatorType) {
-        children.append(coordinator)
+    func startChildCoordinator(_ coordinator: TCoordinatorType, presentationStyle: TransitionPresentationStyle) {
+        children.append(.init(coordinator: coordinator, presentationStyle: presentationStyle))
         coordinator.parent = self
     }
     

@@ -27,4 +27,16 @@ public final class HomeViewModel {
             await coordinator?.navigateToCart()
         }
     }
+
+    public func selectNotifications() {
+        Task(priority: .high) {
+            await coordinator?.pushToNotification()
+        }
+    }
+
+    public func selectProductDetails() {
+        Task(priority: .high) {
+            await coordinator?.navigateToProductDetails()
+        }
+    }
 }

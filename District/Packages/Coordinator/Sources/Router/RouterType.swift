@@ -114,10 +114,4 @@ public protocol RouterType: ObservableObject {
     ///   - animated: A boolean value indicating whether to animate the closing action.
     ///   - finishFlow: A boolean value indicating whether to finish the associated flow.
     @MainActor func close(animated: Bool, finishFlow: Bool) async -> Void
-    
-    /// Restarts the current view or coordinator, optionally animating the restart.
-    ///
-    /// - Parameters:
-    ///   - animated: A boolean value indicating whether to animate the restart action.
-    func restart(animated: Bool) async -> Void
 }

@@ -10,5 +10,7 @@ import Foundation
 @MainActor
 public protocol HomeCoordinator: AnyObject {
     func navigateToNotification() async
+    func pushToNotification() async
     func navigateToCart() async
+    func navigateToProductDetails() async
 }

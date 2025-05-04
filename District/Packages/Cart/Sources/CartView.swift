@@ -14,7 +14,6 @@ public struct CartView: View {
         VStack {
             Text("Cart View")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.red)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {

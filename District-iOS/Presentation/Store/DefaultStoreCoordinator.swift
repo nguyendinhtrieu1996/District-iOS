@@ -9,9 +9,22 @@ import SwiftUI
 import Coordinator
 import Store
 
-public final class DefaultStoreCoordinator: Coordinator<StoreRoute> {
-
+public final class DefaultStoreCoordinator: Coordinator<AppRoute> {
     public override func start(animated: Bool = true) async {
-        await startFlow(route: .store)
+        let viewModel = StoreViewModel(coordinator: self)
+        let route = AppRoute(presentationStyle: .push, view: StoreView(viewModel: viewModel))
+        await startFlow(route: route)
     }
-} 
+}
+
+// MARK: - StoreCoordinator
+
+extension DefaultStoreCoordinator: StoreCoordinator {
+    public func navigateToProduct() async {
+        
+    }
+    
+    public func navigateToCategory() async {
+
+    }
+}

@@ -26,6 +26,7 @@ public struct NotificationView: View {
                     .cornerRadius(8)
             }
         }
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {

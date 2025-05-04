@@ -34,7 +34,7 @@ public extension CoordinatorType {
     /// - Throws: An error if the top coordinator retrieval fails.
     func topCoordinator(pCoodinator: TCoordinatorType? = nil) throws -> TCoordinatorType? {
         guard children.last != nil else { return self }
-        var auxCoordinator = pCoodinator ?? self.children.last
+        var auxCoordinator = pCoodinator ?? self.children.last?.coordinator
         return try getDeepCoordinator(from: &auxCoordinator)
     }
     
@@ -45,17 +45,25 @@ public extension CoordinatorType {
     ///   - presentationStyle: The transition presentation style for the navigation.
     ///   - animated: A boolean value indicating whether to animate the navigation.
     func navigate(to coordinator: TCoordinatorType, presentationStyle: TransitionPresentationStyle, animated: Bool = true ) async -> Void {
-        startChildCoordinator(coordinator)
-        
-        let item = SheetItem(
-            id: "\(coordinator.uuid) - \(presentationStyle.id)",
-            animated: animated,
-            presentationStyle: (presentationStyle != .push) ? presentationStyle : .sheet,
-            view: { [weak coordinator] in coordinator?.getView() }
-        )
-        
-        swipedAway(coordinator: coordinator)
-        router.presentSheet(item: item)
+        startChildCoordinator(coordinator, presentationStyle: presentationStyle)
+
+        switch presentationStyle {
+        case .push:
+            await coordinator.start(animated: true)
+
+        case .sheet,
+             .fullScreenCover,
+             .detents:
+            let item = SheetItem(
+                id: "\(coordinator.uuid) - \(presentationStyle.id)",
+                animated: animated,
+                presentationStyle: (presentationStyle != .push) ? presentationStyle : .sheet,
+                view: { [weak coordinator] in coordinator?.getView() }
+            )
+
+            swipedAway(coordinator: coordinator)
+            router.presentSheet(item: item)
+        }
     }
     
     /// Finishes the flow of the coordinator.
@@ -72,10 +80,14 @@ public extension CoordinatorType {
     ///   - route: The route to start the flow.
     ///   - transitionStyle: The transition presentation style for the flow.
     ///   - animated: A boolean value indicating whether to animate the start flow process.
-    func startFlow(route: Route, transitionStyle: TransitionPresentationStyle? = nil, animated: Bool = true) async -> Void {
-        router.mainView = route
+    func startFlow(route: Route, animated: Bool = true) async -> Void {
+        if route.presentationStyle == .push, router.mainView != nil {
+            await router.navigate(to: route)
+        } else {
+            router.mainView = route
+        }
     }
-    
+
     /// Forces the presentation of the coordinator.
     ///
     /// - Parameters:
@@ -92,12 +104,9 @@ public extension CoordinatorType {
         let topCoordinator = try mainCoordinator?.topCoordinator()
         await topCoordinator?.navigate(to: self, presentationStyle: presentationStyle)
     }
-    
-    /// Restarts the current view or coordinator, optionally animating the restart.
-    ///
-    /// - Parameters:
-    ///   - animated: A boolean value indicating whether to animate the restart action.
-    func restart(animated: Bool = true) async {
-        await router.restart(animated: animated)
+
+    func popToRoot(animated: Bool) async {
+        children.removeAll()
+        await router.clean(animated: animated, withMainView: false)
     }
 }

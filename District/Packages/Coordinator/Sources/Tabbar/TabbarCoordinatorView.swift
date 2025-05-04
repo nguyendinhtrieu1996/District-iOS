@@ -78,7 +78,14 @@ struct TabbarCoordinatorView<DataSource: TabbarCoordinatorType>: View {
                 pages: pages,
                 badges: badges,
                 selectedPage: $dataSource.currentPage,
-                style: style
+                style: style,
+                onSelect: { selectedPage in
+                    if selectedPage == currentPage {
+                        Task(priority: .high) {
+                            await dataSource.popToRoot(animated: true)
+                        }
+                    }
+                }
             )
             .padding(.top, 14)
         }

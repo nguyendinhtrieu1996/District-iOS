@@ -10,10 +10,28 @@ import Coordinator
 import Home
 import Cart
 
-public final class DefaultHomeCoordinator: Coordinator<HomeRoute> {
+public final class DefaultHomeCoordinator: Coordinator<AppRoute> {
+    public override init(initialRouter: Router<AppRoute> = .init()) {
+        super.init(initialRouter: initialRouter)
+
+        handleDeepLink()
+    }
 
     public override func start(animated: Bool = true) async {
-        await startFlow(route: .home(coordinator: self))
+        let viewModel = HomeViewModel(coordinator: self)
+        let route = AppRoute(presentationStyle: .push, view: HomeView(viewModel: viewModel))
+        await startFlow(route: route)
+    }
+}
+
+private extension DefaultHomeCoordinator {
+    func handleDeepLink() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) { [weak self] in
+            guard let self = self else { return }
+            Task(priority: .high) {
+                await self.navigate(to: DefaultProductDetailsCoordinator(), presentationStyle: .fullScreenCover)
+            }
+        }
     }
 }
 
@@ -24,15 +42,15 @@ extension DefaultHomeCoordinator: HomeCoordinator {
         await navigate(to: DefaultNotificationCoordinator(), presentationStyle: .fullScreenCover)
     }
 
-    public func navigateToCart() async {
-        await router.navigate(to: .cart(coordinator: self))
+    public func pushToNotification() async {
+        await navigate(to: DefaultNotificationCoordinator(initialRouter: router), presentationStyle: .push)
     }
-}
 
-// MARK: - CartCoordinator
+    public func navigateToCart() async {
+        await navigate(to: DefaultCartCoordinator(initialRouter: router), presentationStyle: .push)
+    }
 
-extension DefaultHomeCoordinator: CartCoordinator {
-    public func navigateBack() async {
-        await router.pop(animated: true)
+    public func navigateToProductDetails() async {
+        await navigate(to: DefaultProductDetailsCoordinator(initialRouter: router), presentationStyle: .push)
     }
 }

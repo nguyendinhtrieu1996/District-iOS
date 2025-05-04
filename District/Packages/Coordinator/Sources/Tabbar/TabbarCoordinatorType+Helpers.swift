@@ -45,8 +45,4 @@ extension TabbarCoordinatorType {
         
         currentPage = item
     }
-    
-    @MainActor public func popToRoot() async {
-        try? await getCoordinatorSelected().root.popToRoot(animated: true)
-    }
 }

@@ -8,6 +8,10 @@
 import SwiftUI
 import Coordinator
 
+extension Notification.Name {
+    static let backToRoot = Notification.Name("backToRoot")
+}
+
 @main
 struct District_iOSApp: App {
     let mainTabCoordinator = MainTabCoordinator()
@@ -16,6 +20,11 @@ struct District_iOSApp: App {
         WindowGroup {
             mainTabCoordinator.getView()
                 .navigationBarTitleDisplayMode(.inline)
+                .onReceive(NotificationCenter.default.publisher(for: .backToRoot)) { _ in
+                    Task { @MainActor in
+                        try await mainTabCoordinator.popToRoot(animated: false)
+                    }
+                }
         }
     }
 }

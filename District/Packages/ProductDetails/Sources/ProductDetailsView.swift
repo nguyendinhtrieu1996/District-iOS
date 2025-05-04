@@ -11,9 +11,45 @@ public struct ProductDetailsView: View {
     }
     
     public var body: some View {
-        VStack {
+        VStack(spacing: 16) {
             Text("Product Details View")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            Button {
+                viewModel.presentProductDetails()
+            } label: {
+                Text("Present Product Details")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            .padding(.horizontal)
+            
+            Button {
+                viewModel.pushProductDetails()
+            } label: {
+                Text("Push Product Details")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            .padding(.horizontal)
+            
+            Button {
+                viewModel.navigateBackToRoot()
+            } label: {
+                Text("Back to Root")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            .padding(.horizontal)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {

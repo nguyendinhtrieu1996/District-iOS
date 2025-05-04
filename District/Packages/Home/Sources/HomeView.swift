@@ -11,9 +11,33 @@ public struct HomeView: View {
     }
 
     public var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             Text("Home View")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            Button {
+                viewModel.selectNotifications()
+            } label: {
+                Text("Push to Notifications")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            .padding(.horizontal)
+            
+            Button {
+                viewModel.selectProductDetails()
+            } label: {
+                Text("Push to Product Details")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            .padding(.horizontal)
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

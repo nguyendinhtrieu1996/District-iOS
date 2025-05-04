@@ -51,11 +51,11 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
     public var uuid: String
     
     /// The parent coordinator associated with the coordinator.
-    public var parent: (any CoordinatorType)!
+    public weak var parent: (any CoordinatorType)?
     
     /// The array of children coordinators associated with the coordinator.
-    public var children: [(any CoordinatorType)] = []
-    
+    public var children: [ChildCoordinator] = []
+
     /// The tag identifier associated with the coordinator.
     public var tagId: String?
     
@@ -122,7 +122,6 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
 
         await startFlow(
             route: DefaultRoute(presentationStyle: presentationStyle) { cView },
-            transitionStyle: presentationStyle,
             animated: animated)
     }
     
@@ -136,7 +135,7 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
     ///   - position: The position of the coordinator.
     /// - Returns: The coordinator at the specified position.
     public func getCoordinator(with position: Int) -> (any CoordinatorType)? {
-        children.first { $0.tagId == "\(position)" }
+        children.first { $0.tagId == "\(position)" }?.coordinator
     }
     
     /// Retrieves the selected coordinator within the tabbar coordinator.
@@ -145,9 +144,14 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
     open func getCoordinatorSelected() throws -> (any CoordinatorType) {
         guard let index = children.firstIndex(where: { $0.tagId == "\(currentPage.position)" })
         else { throw TabbarCoordinatorError.coordinatorSelected }
-        return children[index]
+        return children[index].coordinator
     }
-    
+
+    public func popToRoot(animated: Bool) async throws {
+        let selectedCoordinator = try getCoordinatorSelected()
+        await selectedCoordinator.popToRoot(animated: animated)
+    }
+
     @MainActor public func clean() async {
         await setPages([], currentPage: nil)
         await router.clean(animated: false)

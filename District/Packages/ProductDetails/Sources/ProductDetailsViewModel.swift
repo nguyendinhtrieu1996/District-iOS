@@ -20,4 +20,22 @@ public final class ProductDetailsViewModel {
             await coordinator?.navigateToCart()
         }
     }
+    
+    public func presentProductDetails() {
+        Task(priority: .high) {
+            await coordinator?.presentProductDetails()
+        }
+    }
+    
+    public func pushProductDetails() {
+        Task(priority: .high) {
+            await coordinator?.pushProductDetails()
+        }
+    }
+    
+    public func navigateBackToRoot() {
+        Task(priority: .high) {
+            await coordinator?.navigateBackToRoot()
+        }
+    }
 } 
