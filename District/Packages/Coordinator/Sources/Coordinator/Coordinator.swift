@@ -25,6 +25,8 @@
 import Foundation
 import Combine
 
+
+
 /// An open class representing a coordinator in a coordinator-based architecture.
 ///
 /// Coordinators are responsible for coordinating the navigation and flow within an application.

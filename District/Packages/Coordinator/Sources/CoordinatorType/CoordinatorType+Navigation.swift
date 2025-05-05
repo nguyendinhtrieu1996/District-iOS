@@ -44,7 +44,7 @@ public extension CoordinatorType {
     ///   - coordinator: The coordinator to navigate to.
     ///   - presentationStyle: The transition presentation style for the navigation.
     ///   - animated: A boolean value indicating whether to animate the navigation.
-    func navigate(to coordinator: TCoordinatorType, presentationStyle: TransitionPresentationStyle, animated: Bool = true ) async -> Void {
+    func navigate(to coordinator: TCoordinatorType, presentationStyle: TransitionPresentationStyle, animated: Bool = true) async -> Void {
         startChildCoordinator(coordinator, presentationStyle: presentationStyle)
 
         switch presentationStyle {
@@ -81,8 +81,8 @@ public extension CoordinatorType {
     ///   - transitionStyle: The transition presentation style for the flow.
     ///   - animated: A boolean value indicating whether to animate the start flow process.
     func startFlow(route: Route, animated: Bool = true) async -> Void {
-        if route.presentationStyle == .push, router.mainView != nil {
-            await router.navigate(to: route)
+        if router.mainView != nil {
+            await router.navigate(to: route, animated: animated)
         } else {
             router.mainView = route
         }

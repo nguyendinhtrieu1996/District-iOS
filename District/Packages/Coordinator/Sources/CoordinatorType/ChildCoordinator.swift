@@ -14,7 +14,10 @@ public struct ChildCoordinator {
     public let coordinator: TCoordinatorType
     public let presentationStyle: TransitionPresentationStyle
 
-    public init(coordinator: TCoordinatorType, presentationStyle: TransitionPresentationStyle) {
+    public init(
+        coordinator: TCoordinatorType,
+        presentationStyle: TransitionPresentationStyle
+    ) {
         self.coordinator = coordinator
         self.presentationStyle = presentationStyle
     }
