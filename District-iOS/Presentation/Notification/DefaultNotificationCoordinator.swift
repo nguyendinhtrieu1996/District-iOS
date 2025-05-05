@@ -19,6 +19,6 @@ public final class DefaultNotificationCoordinator: Coordinator<AppRoute> {
 
 extension DefaultNotificationCoordinator: NotificationCoordinator {
     public func navigateToProductDetails() async {
-        await navigate(to: DefaultProductDetailsCoordinator(initialRouter: router), presentationStyle: .push)
+        await navigate(to: DefaultProductDetailsCoordinator(router: router), presentationStyle: .push)
     }
 }

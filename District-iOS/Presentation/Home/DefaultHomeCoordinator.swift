@@ -11,8 +11,8 @@ import Home
 import Cart
 
 public final class DefaultHomeCoordinator: Coordinator<AppRoute> {
-    public override init(initialRouter: Router<AppRoute> = .init()) {
-        super.init(initialRouter: initialRouter)
+    public override init(router: Router<AppRoute> = .init()) {
+        super.init(router: router)
 
         handleDeepLink()
     }
@@ -43,14 +43,14 @@ extension DefaultHomeCoordinator: HomeCoordinator {
     }
 
     public func pushToNotification() async {
-        await navigate(to: DefaultNotificationCoordinator(initialRouter: router), presentationStyle: .push)
+        await navigate(to: DefaultNotificationCoordinator(router: router), presentationStyle: .push)
     }
 
     public func navigateToCart() async {
-        await navigate(to: DefaultCartCoordinator(initialRouter: router), presentationStyle: .push)
+        await navigate(to: DefaultCartCoordinator(router: router), presentationStyle: .push)
     }
 
     public func navigateToProductDetails() async {
-        await navigate(to: DefaultProductDetailsCoordinator(initialRouter: router), presentationStyle: .push)
+        await navigate(to: DefaultProductDetailsCoordinator(router: router), presentationStyle: .push)
     }
 }

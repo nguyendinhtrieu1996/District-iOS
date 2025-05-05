@@ -17,7 +17,7 @@ public final class DefaultProductDetailsCoordinator: Coordinator<AppRoute> {
 
 extension DefaultProductDetailsCoordinator: ProductDetailsCoordinator {
     public func navigateToCart() async {
-        await navigate(to: DefaultCartCoordinator(initialRouter: router), presentationStyle: .push)
+        await navigate(to: DefaultCartCoordinator(router: router), presentationStyle: .push)
     }
 
     public func presentProductDetails() async {
@@ -25,7 +25,7 @@ extension DefaultProductDetailsCoordinator: ProductDetailsCoordinator {
     }
 
     public func pushProductDetails() async {
-        await navigate(to: DefaultProductDetailsCoordinator(initialRouter: router), presentationStyle: .push)
+        await navigate(to: DefaultProductDetailsCoordinator(router: router), presentationStyle: .push)
     }
 
     public func navigateBackToRoot() async {

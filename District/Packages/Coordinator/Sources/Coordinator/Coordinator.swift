@@ -25,8 +25,6 @@
 import Foundation
 import Combine
 
-
-
 /// An open class representing a coordinator in a coordinator-based architecture.
 ///
 /// Coordinators are responsible for coordinating the navigation and flow within an application.
@@ -60,8 +58,8 @@ open class Coordinator<Route: RouteType>: ObservableObject, CoordinatorType {
     // --------------------------------------------------------------------
     
     /// Initializes a new instance of `Coordinator`.
-    public init(initialRouter: Router<Route> = .init()) {
-        self.router = initialRouter
+    public init(router: Router<Route> = .init()) {
+        self.router = router
         self.uuid = "\(NSStringFromClass(type(of: self))) - \(UUID().uuidString)"
         
         router.isTabbarCoordinable = false
