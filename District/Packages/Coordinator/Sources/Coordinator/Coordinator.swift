@@ -48,7 +48,7 @@ open class Coordinator<Route: RouteType>: ObservableObject, CoordinatorType {
     public weak var parent: (any CoordinatorType)?
     
     /// The array of children coordinators associated with the coordinator.
-    public var children: [ChildCoordinator] = []
+    public var children: [CoordinatorNode] = []
     
     /// The tag identifier associated with the coordinator.
     public var tagId: String?
@@ -56,12 +56,12 @@ open class Coordinator<Route: RouteType>: ObservableObject, CoordinatorType {
     // --------------------------------------------------------------------
     // MARK: Constructor
     // --------------------------------------------------------------------
-    
+
     /// Initializes a new instance of `Coordinator`.
-    public init(router: Router<Route> = .init()) {
-        self.router = router
+    public init() {
+        self.router = .init()
         self.uuid = "\(NSStringFromClass(type(of: self))) - \(UUID().uuidString)"
-        
+
         router.isTabbarCoordinable = false
     }
     

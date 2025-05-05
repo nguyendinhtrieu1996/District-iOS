@@ -61,7 +61,7 @@ public protocol CoordinatorType: SCHashable, ObservableObject {
     var parent: TCoordinatorType? { get set }
     
     /// An array of child coordinators associated with this coordinator.
-    var children: [ChildCoordinator] { get set }
+    var children: [CoordinatorNode] { get set }
     
     /// The router responsible for navigation within the coordinator.
     var router: Router<Route> { get set }

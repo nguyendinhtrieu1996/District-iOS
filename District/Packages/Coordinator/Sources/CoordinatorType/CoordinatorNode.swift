@@ -1,5 +1,5 @@
 //
-//  ChildCoordinator.swift
+//  CoordinatorNode.swift
 //  District
 //
 //  Created by Trieu Nguyen on 4/5/25.
@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-public struct ChildCoordinator {
+public struct CoordinatorNode {
     public typealias TCoordinatorType = (any CoordinatorType)
 
     public let coordinator: TCoordinatorType

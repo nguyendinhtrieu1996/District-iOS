@@ -41,31 +41,49 @@ public extension CoordinatorType {
     /// Navigates to a new coordinator with a specified presentation style.
     ///
     /// - Parameters:
-    ///   - coordinator: The coordinator to navigate to.
-    ///   - presentationStyle: The transition presentation style for the navigation.
+    ///   - coordinator: The coordinator to present to.
+    ///   - presentationStyle: The transition presentation style for the navigation. Note: `.push` style is not allowed in this method.
     ///   - animated: A boolean value indicating whether to animate the navigation.
-    func navigate(to coordinator: TCoordinatorType, presentationStyle: TransitionPresentationStyle, animated: Bool = true) async -> Void {
+    func present(to coordinator: TCoordinatorType, presentationStyle: TransitionPresentationStyle, animated: Bool = true) async -> Void {
+        if presentationStyle == .push {
+            assertionFailure("Push presentation style is not allowed in present method. Use push(to:animated:) instead.")
+        }
+        
         startChildCoordinator(coordinator, presentationStyle: presentationStyle)
 
-        switch presentationStyle {
-        case .push:
-            await coordinator.start(animated: true)
+        let item = SheetItem(
+            id: "\(coordinator.uuid) - \(presentationStyle.id)",
+            animated: animated,
+            presentationStyle: (presentationStyle != .push) ? presentationStyle : .sheet,
+            view: { [weak coordinator] in coordinator?.getView() }
+        )
 
-        case .sheet,
-             .fullScreenCover,
-             .detents:
-            let item = SheetItem(
-                id: "\(coordinator.uuid) - \(presentationStyle.id)",
-                animated: animated,
-                presentationStyle: (presentationStyle != .push) ? presentationStyle : .sheet,
-                view: { [weak coordinator] in coordinator?.getView() }
-            )
-
-            swipedAway(coordinator: coordinator)
-            router.presentSheet(item: item)
-        }
+        swipedAway(coordinator: coordinator)
+        router.presentSheet(item: item)
     }
-    
+
+    /// Pushes a new coordinator using the same router as the current coordinator.
+    ///
+    /// This method enforces that both coordinators share the same `Route` type and
+    /// ensures the pushed coordinator uses the same `Router<Route>`.
+    ///
+    /// - Parameters:
+    ///   - coordinator: The coordinator to push.
+    ///   - animated: Whether the push should be animated.
+    func push<C: CoordinatorType>(
+        to coordinator: inout C,
+        animated: Bool = true
+    ) async where C.Route == Route {
+
+        // Force router assignment to ensure consistency in the navigation stack
+        coordinator.router = router
+
+        // Start as a child coordinator with push style
+        startChildCoordinator(coordinator, presentationStyle: .push)
+
+        await coordinator.start(animated: animated)
+    }
+
     /// Finishes the flow of the coordinator.
     ///
     /// - Parameters:
@@ -102,7 +120,7 @@ public extension CoordinatorType {
         mainCoordinator: (any CoordinatorType)? = nil
     ) async throws {
         let topCoordinator = try mainCoordinator?.topCoordinator()
-        await topCoordinator?.navigate(to: self, presentationStyle: presentationStyle)
+        await topCoordinator?.present(to: self, presentationStyle: presentationStyle)
     }
 
     func popToRoot(animated: Bool) async {

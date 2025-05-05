@@ -54,7 +54,7 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
     public weak var parent: (any CoordinatorType)?
     
     /// The array of children coordinators associated with the coordinator.
-    public var children: [ChildCoordinator] = []
+    public var children: [CoordinatorNode] = []
 
     /// The tag identifier associated with the coordinator.
     public var tagId: String?

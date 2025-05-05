@@ -17,15 +17,17 @@ public final class DefaultProductDetailsCoordinator: Coordinator<AppRoute> {
 
 extension DefaultProductDetailsCoordinator: ProductDetailsCoordinator {
     public func navigateToCart() async {
-        await navigate(to: DefaultCartCoordinator(router: router), presentationStyle: .push)
+        var coordinator = DefaultCartCoordinator()
+        await push(to: &coordinator)
     }
 
     public func presentProductDetails() async {
-        await navigate(to: DefaultProductDetailsCoordinator(), presentationStyle: .fullScreenCover)
+        await present(to: DefaultProductDetailsCoordinator(), presentationStyle: .fullScreenCover)
     }
 
     public func pushProductDetails() async {
-        await navigate(to: DefaultProductDetailsCoordinator(router: router), presentationStyle: .push)
+        var coordinator = DefaultProductDetailsCoordinator()
+        await push(to: &coordinator)
     }
 
     public func navigateBackToRoot() async {
