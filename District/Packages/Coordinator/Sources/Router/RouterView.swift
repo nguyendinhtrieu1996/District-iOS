@@ -48,8 +48,8 @@ struct RouterView<Router: RouterType>: View {
     
     var body: some View {
         ZStack { buildBody() }
-        .onChange(of: viewModel.mainView, perform: onChangeFirstView)
-        .onViewDidLoad { onChangeFirstView(viewModel.mainView) }
+            .onChange(of: viewModel.mainView, perform: onChangeFirstView)
+            .onViewDidLoad { onChangeFirstView(viewModel.mainView) }
     }
     
     // --------------------------------------------------------------------
