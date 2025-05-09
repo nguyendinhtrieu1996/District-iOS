@@ -10,11 +10,9 @@ import Coordinator
 
 @MainActor
 public struct AppRoute: RouteType {
-    public let presentationStyle: TransitionPresentationStyle
     public let view: Body
 
-    public init(presentationStyle: TransitionPresentationStyle, view: Body) {
-        self.presentationStyle = presentationStyle
+    public init(view: Body) {
         self.view = view
     }
 }

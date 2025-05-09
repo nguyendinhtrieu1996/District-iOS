@@ -63,9 +63,8 @@ public protocol RouterType: ObservableObject {
     ///
     /// - Parameters:
     ///   - route: The route to navigate to.
-    ///   - presentationStyle: The transition presentation style for the navigation.
     ///   - animated: A boolean value indicating whether to animate the navigation.
-    @MainActor func navigate(to route: Route, presentationStyle: TransitionPresentationStyle?, animated: Bool) async
+    @MainActor func navigate(to route: Route, animated: Bool) async
     
     /// Presents a view or coordinator with optional presentation style and animation.
     ///
@@ -73,7 +72,7 @@ public protocol RouterType: ObservableObject {
     ///   - view: The view or coordinator to present.
     ///   - presentationStyle: The transition presentation style for the presentation.
     ///   - animated: A boolean value indicating whether to animate the presentation.
-    @MainActor func present(_ view: Route, presentationStyle: TransitionPresentationStyle?, animated: Bool) async
+    @MainActor func present(_ view: Route, presentationStyle: TransitionPresentationStyle, animated: Bool) async
     
     /// Pops the top view or coordinator from the navigation stack.
     ///

@@ -12,10 +12,7 @@ import DirectChat
 public final class DefaultDirectChatCoordinator: Coordinator<AppRoute> {
     public override func start(animated: Bool = true) async {
         let viewModel = DirectChatViewModel(coordinator: self)
-        let route = AppRoute(
-            presentationStyle: .push,
-            view: DirectChatView(viewModel: viewModel)
-        )
+        let route = AppRoute(view: DirectChatView(viewModel: viewModel))
         await startFlow(route: route)
     }
 }

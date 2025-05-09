@@ -19,7 +19,7 @@ public final class DefaultHomeCoordinator: Coordinator<AppRoute> {
 
     public override func start(animated: Bool = true) async {
         let viewModel = HomeViewModel(coordinator: self)
-        let route = AppRoute(presentationStyle: .push, view: HomeView(viewModel: viewModel))
+        let route = AppRoute(view: HomeView(viewModel: viewModel))
         await startFlow(route: route)
     }
 }

@@ -7,10 +7,7 @@ import Cart
 public final class DefaultNotificationCoordinator: Coordinator<AppRoute> {
     public override func start(animated: Bool = true) async {
         let viewModel = NotificationViewModel(coordinator: self)
-        let route = AppRoute(
-            presentationStyle: .push,
-            view: NotificationView(viewModel: viewModel)
-        )
+        let route = AppRoute(view: NotificationView(viewModel: viewModel))
         await startFlow(route: route)
     }
 }

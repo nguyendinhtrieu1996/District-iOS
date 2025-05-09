@@ -31,8 +31,6 @@ import SwiftUI
  */
 public enum TransitionPresentationStyle: SCEquatable, Sendable {
     
-    /// A push transition style, commonly used in navigation controllers.
-    case push
     /// A sheet presentation style, often used for modal or overlay views.
     case sheet
     /// A full-screen cover presentation style.

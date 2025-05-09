@@ -41,7 +41,7 @@ extension TabbarCoordinatorType where Self : TabbarCoordinatable {
     func setupPages(_ value: [Page], currentPage: Page? = nil) {
         for page in value {
             let item = page.coordinator()
-            startChildCoordinator(item, presentationStyle: .push)
+            startChildCoordinator(item, nodeType: .root)
             item.tagId = "\(page.position)"
         }
         

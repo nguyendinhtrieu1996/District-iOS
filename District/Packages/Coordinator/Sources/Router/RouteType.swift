@@ -40,13 +40,6 @@ public protocol RouteType: SCHashable {
     /// A type alias representing the body of the route, conforming to the View protocol.
     typealias Body = (any View)
     
-    // ---------------------------------------------------------
-    // MARK: Properties
-    // ---------------------------------------------------------
-    
-    /// The transition style for presenting the view.
-    var presentationStyle: TransitionPresentationStyle { get }
-    
     /// The body of the route, conforming to the View protocol.
     @ViewBuilder @MainActor var view: Body { get }
 }

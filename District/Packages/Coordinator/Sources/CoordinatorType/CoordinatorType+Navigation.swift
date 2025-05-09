@@ -44,17 +44,17 @@ public extension CoordinatorType {
     ///   - coordinator: The coordinator to present to.
     ///   - presentationStyle: The transition presentation style for the navigation. Note: `.push` style is not allowed in this method.
     ///   - animated: A boolean value indicating whether to animate the navigation.
-    func present(to coordinator: TCoordinatorType, presentationStyle: TransitionPresentationStyle, animated: Bool = true) async -> Void {
-        if presentationStyle == .push {
-            assertionFailure("Push presentation style is not allowed in present method. Use push(to:animated:) instead.")
-        }
-        
-        startChildCoordinator(coordinator, presentationStyle: presentationStyle)
+    func present(
+        to coordinator: TCoordinatorType,
+        presentationStyle: TransitionPresentationStyle,
+        animated: Bool = true
+    ) async -> Void {
+        startChildCoordinator(coordinator, nodeType: .present(style: presentationStyle))
 
         let item = SheetItem(
             id: "\(coordinator.uuid) - \(presentationStyle.id)",
             animated: animated,
-            presentationStyle: (presentationStyle != .push) ? presentationStyle : .sheet,
+            presentationStyle: presentationStyle,
             view: { [weak coordinator] in coordinator?.getView() }
         )
 
@@ -78,7 +78,7 @@ public extension CoordinatorType {
         coordinator.router = router
 
         // Start as a child coordinator with push style
-        startChildCoordinator(coordinator, presentationStyle: .push)
+        startChildCoordinator(coordinator, nodeType: .present(style: .fullScreenCover))
 
         await coordinator.start(animated: animated)
     }
@@ -99,13 +99,16 @@ public extension CoordinatorType {
             return
         }
 
-        switch child.presentationStyle {
+        switch child.nodeType {
         case .push:
             await router.dismiss(animated: animated)
             await router.pop(animated: animated)
             await parent.removeChild(coordinator: self)
 
-        default:
+        case .root:
+            break
+
+        case .present:
             await parent.closeLastSheet()
             await parent.removeChild(coordinator: self)
         }

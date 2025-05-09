@@ -12,10 +12,7 @@ import Search
 public final class DefaultSearchCoordinator: Coordinator<AppRoute> {
     public override func start(animated: Bool = true) async {
         let viewModel = SearchViewModel(coordinator: self)
-        let route = AppRoute(
-            presentationStyle: .push,
-            view: SearchView(viewModel: viewModel)
-        )
+        let route = AppRoute(view: SearchView(viewModel: viewModel))
         await startFlow(route: route)
     }
 } 

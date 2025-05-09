@@ -5,10 +5,7 @@ import ProductDetails
 public final class DefaultProductDetailsCoordinator: Coordinator<AppRoute> {
     public override func start(animated: Bool = true) async {
         let viewModel = ProductDetailsViewModel(coordinator: self)
-        let route = AppRoute(
-            presentationStyle: .push,
-            view: ProductDetailsView(viewModel: viewModel)
-        )
+        let route = AppRoute(view: ProductDetailsView(viewModel: viewModel))
         await startFlow(route: route)
     }
 }

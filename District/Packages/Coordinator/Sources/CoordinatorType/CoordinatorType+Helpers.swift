@@ -85,8 +85,8 @@ extension CoordinatorType {
     ///
     /// - Parameters:
     ///   - coordinator: The child coordinator to be started.
-    func startChildCoordinator(_ coordinator: TCoordinatorType, presentationStyle: TransitionPresentationStyle) {
-        children.append(.init(coordinator: coordinator, presentationStyle: presentationStyle))
+    func startChildCoordinator(_ coordinator: TCoordinatorType, nodeType: CoordinatorNode.NodeType) {
+        children.append(.init(coordinator: coordinator, nodeType: nodeType))
         coordinator.parent = self
     }
     

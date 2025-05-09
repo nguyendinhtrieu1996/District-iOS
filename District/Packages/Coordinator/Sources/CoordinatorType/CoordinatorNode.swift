@@ -12,14 +12,14 @@ public struct CoordinatorNode {
     public typealias TCoordinatorType = (any CoordinatorType)
 
     public let coordinator: TCoordinatorType
-    public let presentationStyle: TransitionPresentationStyle
+    public let nodeType: NodeType
 
     public init(
         coordinator: TCoordinatorType,
-        presentationStyle: TransitionPresentationStyle
+        nodeType: NodeType
     ) {
         self.coordinator = coordinator
-        self.presentationStyle = presentationStyle
+        self.nodeType = nodeType
     }
 
     public var tagId: String? {
@@ -28,5 +28,13 @@ public struct CoordinatorNode {
 
     public var id: String {
         coordinator.id
+    }
+}
+
+public extension CoordinatorNode {
+    enum NodeType {
+        case root
+        case push
+        case present(style: TransitionPresentationStyle)
     }
 }

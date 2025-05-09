@@ -12,7 +12,7 @@ import Store
 public final class DefaultStoreCoordinator: Coordinator<AppRoute> {
     public override func start(animated: Bool = true) async {
         let viewModel = StoreViewModel(coordinator: self)
-        let route = AppRoute(presentationStyle: .push, view: StoreView(viewModel: viewModel))
+        let route = AppRoute(view: StoreView(viewModel: viewModel))
         await startFlow(route: route)
     }
 }

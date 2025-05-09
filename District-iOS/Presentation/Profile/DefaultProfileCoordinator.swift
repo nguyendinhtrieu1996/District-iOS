@@ -12,7 +12,7 @@ import Profile
 public final class DefaultProfileCoordinator: Coordinator<AppRoute> {
     public override func start(animated: Bool = true) async {
         let viewModel = ProfileViewModel(coordinator: self)
-        let route = AppRoute(presentationStyle: .push, view: ProfileView(viewModel: viewModel))
+        let route = AppRoute(view: ProfileView(viewModel: viewModel))
         await startFlow(route: route)
     }
 }

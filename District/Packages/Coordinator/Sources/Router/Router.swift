@@ -69,18 +69,11 @@ public class Router<Route: RouteType>: ObservableObject, RouterType {
     ///   - animated: A boolean value indicating whether to animate the navigation.
     @MainActor public func navigate(
         to route: Route,
-        presentationStyle: TransitionPresentationStyle? = nil,
         animated: Bool = true
     ) async -> Void {
-        if (presentationStyle ?? route.presentationStyle) == .push {
-            return await runActionWithAnimation(animated) { [weak self] in
-                return { self?.items.append(route) }
-            }
+        await runActionWithAnimation(animated) { [weak self] in
+            return { self?.items.append(route) }
         }
-        await present(
-            route,
-            presentationStyle: presentationStyle,
-            animated: animated)
     }
     
     /// Presents a view or coordinator with optional presentation style and animation.
@@ -89,18 +82,15 @@ public class Router<Route: RouteType>: ObservableObject, RouterType {
     ///   - view: The view or coordinator to present.
     ///   - presentationStyle: The transition presentation style for the presentation.
     ///   - animated: A boolean value indicating whether to animate the presentation.
-    @MainActor public func present(_ view: Route, presentationStyle: TransitionPresentationStyle? = .sheet, animated: Bool = true) async -> Void {
-        if (presentationStyle ?? view.presentationStyle) == .push {
-            return await navigate(
-                to: view,
-                presentationStyle: presentationStyle,
-                animated: animated)
-        }
-        
+    @MainActor public func present(
+        _ view: Route,
+        presentationStyle: TransitionPresentationStyle = .sheet,
+        animated: Bool = true
+    ) async -> Void {
         let item = SheetItem(
             id: "\(view.id) - \(UUID())",
             animated: animated,
-            presentationStyle: presentationStyle ?? view.presentationStyle,
+            presentationStyle: presentationStyle,
             view: { view.view }
         )
         
