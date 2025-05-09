@@ -73,7 +73,6 @@ struct SheetCoordinatorView: ViewModifier {
     // MARK: Helper Views
     // ---------------------------------------------------------
     
-    
     private func buildContent(
         index: Int,
         item: SheetItem<Value>
