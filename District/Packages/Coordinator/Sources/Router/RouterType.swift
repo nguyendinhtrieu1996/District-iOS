@@ -42,18 +42,18 @@ public protocol RouterType: ObservableObject {
     // --------------------------------------------------------------------
     // MARK: Properties
     // --------------------------------------------------------------------
-    
-    /// The coordinator associated with the router.
-    var isTabbarCoordinable: Bool { get set }
-    
-    /// An array of route items associated with the router.
-    var items: [Route] { get set }
-    
-    /// The sheet coordinator associated with the router.
-    var sheetCoordinator: SheetCoordinator<Route.Body> { get set }
-    
+
     /// The main view associated with the router.
     var mainView: Route? { get set }
+
+    /// An array of route items associated with the router.
+    var items: [Route] { get set }
+
+    /// The coordinator associated with the router.
+    var isTabbarCoordinable: Bool { get set }
+
+    /// The sheet coordinator associated with the router.
+    var sheetCoordinator: SheetCoordinator<Route.Body> { get set }
     
     // --------------------------------------------------------------------
     // MARK: Functions
