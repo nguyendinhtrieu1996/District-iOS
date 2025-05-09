@@ -22,7 +22,7 @@ struct District_iOSApp: App {
                 .navigationBarTitleDisplayMode(.inline)
                 .onReceive(NotificationCenter.default.publisher(for: .backToRoot)) { _ in
                     Task { @MainActor in
-                        try await mainTabCoordinator.popToRoot(animated: false)
+                        try await mainTabCoordinator.popToRoot(animated: true)
                     }
                 }
         }

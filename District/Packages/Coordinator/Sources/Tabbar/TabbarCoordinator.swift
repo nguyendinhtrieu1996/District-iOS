@@ -64,9 +64,6 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
     // --------------------------------------------------------------------
 
     private var coordinatorStyle: TabbarCoordinatorStyle
-
-    /// The presentation style for transitioning between pages.
-    private var presentationStyle: TransitionPresentationStyle
     
     /// A subject for setting badge values.
     public var setBadge: PassthroughSubject<(String?, Page), Never> = .init()
@@ -88,13 +85,11 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
     public init(
         pages: [Page],
         currentPage: Page,
-        presentationStyle: TransitionPresentationStyle = .sheet,
         coordinatorStyle: TabbarCoordinatorStyle = .default,
         customView: (() -> Page.View?)? = nil
     ) {
         self.router = .init()
         self.uuid = "\(NSStringFromClass(type(of: self))) - \(UUID().uuidString)"
-        self.presentationStyle = presentationStyle
         self.coordinatorStyle = coordinatorStyle
         self.currentPage = currentPage
         self.customView = customView
@@ -121,7 +116,7 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
         )
 
         await startFlow(
-            route: DefaultRoute(presentationStyle: presentationStyle) { cView },
+            route: DefaultRoute() { cView },
             animated: animated)
     }
     

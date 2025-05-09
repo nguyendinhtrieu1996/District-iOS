@@ -32,9 +32,6 @@ public struct DefaultRoute: RouteType {
     // MARK: - Properties
     // ---------------------------------------------------------
     
-    /// The presentation style for the route transition.
-    private let _presentationStyle: TransitionPresentationStyle
-    
     /// The content view for the route.
     public var content: () -> (Body?)
     
@@ -45,23 +42,9 @@ public struct DefaultRoute: RouteType {
     /// Initializes a new instance of `DefaultRoute`.
     ///
     /// - Parameters:
-    ///   - presentationStyle: The presentation style for the route transition.
     ///   - content: The content view for the route.
-    public init(
-        presentationStyle: TransitionPresentationStyle,
-        @ViewBuilder content: @escaping () -> Body?
-    ) {
+    public init(@ViewBuilder content: @escaping () -> Body?) {
         self.content = content
-        self._presentationStyle = presentationStyle
-    }
-    
-    // ---------------------------------------------------------
-    // MARK: - RouteNavigation
-    // ---------------------------------------------------------
-    
-    /// The presentation style for the route transition.
-    public var presentationStyle: TransitionPresentationStyle {
-        _presentationStyle
     }
     
     /// The view to be presented for the route.
