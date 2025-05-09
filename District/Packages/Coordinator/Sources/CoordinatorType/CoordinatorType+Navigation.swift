@@ -122,7 +122,7 @@ public extension CoordinatorType {
     ///   - animated: A boolean value indicating whether to animate the start flow process.
     func startFlow(route: Route, animated: Bool = true) async -> Void {
         if router.mainView != nil {
-            await router.navigate(to: route, animated: animated)
+            await router.push(to: route, animated: animated)
         } else {
             router.mainView = route
         }

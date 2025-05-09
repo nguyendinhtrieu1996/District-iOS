@@ -64,10 +64,10 @@ public class Router<Route: RouteType>: ObservableObject, RouterType {
     /// Navigates to a specified route with optional presentation style and animation.
     ///
     /// - Parameters:
-    ///   - route: The route to navigate to.
+    ///   - route: The route to push to.
     ///   - presentationStyle: The transition presentation style for the navigation.
     ///   - animated: A boolean value indicating whether to animate the navigation.
-    @MainActor public func navigate(
+    @MainActor public func push(
         to route: Route,
         animated: Bool = true
     ) async -> Void {
