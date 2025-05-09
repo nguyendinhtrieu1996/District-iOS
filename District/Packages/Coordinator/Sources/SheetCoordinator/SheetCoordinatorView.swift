@@ -39,16 +39,15 @@ struct SheetCoordinatorView: ViewModifier {
     // ---------------------------------------------------------
     
     @ObservedObject var coordinator: SheetCoordinator<Value>
-    @State var index = 0
-    
+
     // ---------------------------------------------------------
     // MARK: Properties
     // ---------------------------------------------------------
-    
-    public var isLast: Bool
-    public var onDissmis: Action?
-    public var onDidLoad: Action?
-    
+
+    let index: Int
+    let onDissmis: Action?
+    let onDidLoad: Action?
+
     // ---------------------------------------------------------
     // MARK: ViewModifier
     // ---------------------------------------------------------
@@ -59,15 +58,13 @@ struct SheetCoordinatorView: ViewModifier {
             .background {
                 VStack {
                     SheetView(
-                        index: index,
                         items: $coordinator.items,
+                        index: index,
                         content: buildContent,
-                        transitionStyle: coordinator.lastPresentationStyle,
-                        animated: coordinator.animated ?? true,
                         onDismiss: onDissmis,
                         onDidLoad: onDidLoad
                     )
-                    .hidden($coordinator.items.isEmpty || isLast)
+                    .hidden($coordinator.items.isEmpty)
                 }
             }
     }
@@ -78,14 +75,13 @@ struct SheetCoordinatorView: ViewModifier {
     
     
     private func buildContent(
-        with index: Int,
+        index: Int,
         item: SheetItem<Value>
     ) -> some View {
         let view = (item.view() ?? AnyView(EmptyView()))
             .sheetCoordinator(
                 coordinator: coordinator,
-                index: coordinator.getNextIndex(index),
-                isLast: coordinator.isLastIndex(index),
+                index: index + 1,
                 onDissmis: onDissmis,
                 onDidLoad: onDidLoad
             )

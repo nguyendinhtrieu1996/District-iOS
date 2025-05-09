@@ -151,10 +151,4 @@ open class TabbarCoordinator<Page: TabbarPage>: TabbarCoordinatable {
         let selectedCoordinator = try getCoordinatorSelected()
         await selectedCoordinator.popToRoot(animated: animated)
     }
-
-    @MainActor public func clean() async {
-        await setPages([], currentPage: nil)
-        await router.clean(animated: false)
-        customView = nil
-    }
 }

@@ -58,8 +58,7 @@ public extension CoordinatorType {
             view: { [weak coordinator] in coordinator?.getView() }
         )
 
-        swipedAway(coordinator: coordinator)
-        router.presentSheet(item: item)
+        await router.presentSheet(item: item)
     }
 
     /// Pushes a new coordinator using the same router as the current coordinator.
@@ -89,7 +88,27 @@ public extension CoordinatorType {
     /// - Parameters:
     ///   - animated: A boolean value indicating whether to animate the finish flow process.
     func finishFlow(animated: Bool = true) async -> Void {
-        await finish(animated: animated, withDismiss: true)
+        guard !isEmptyCoordinator else {
+            assertionFailure("Coordinator is empty. Cannot finish flow.")
+            return
+        }
+
+        guard let parent,
+              let child = parent.children.first(where: { $0.coordinator.uuid == uuid }) else {
+            assertionFailure("Coordinator not found in parent.")
+            return
+        }
+
+        switch child.presentationStyle {
+        case .push:
+            await router.dismiss(animated: animated)
+            await router.pop(animated: animated)
+            await parent.removeChild(coordinator: self)
+
+        default:
+            await parent.closeLastSheet()
+            await parent.removeChild(coordinator: self)
+        }
     }
     
     /// Starts a flow in the coordinator with a specified route and transition style.
@@ -125,6 +144,6 @@ public extension CoordinatorType {
 
     func popToRoot(animated: Bool) async {
         children.removeAll()
-        await router.clean(animated: animated, withMainView: false)
+        await router.popToRoot(animated: animated)
     }
 }

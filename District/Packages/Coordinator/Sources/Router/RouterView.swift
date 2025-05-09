@@ -74,18 +74,7 @@ struct RouterView<Router: RouterType>: View {
     @ViewBuilder
     private func addSheetTo(view: (some View)?) -> some View {
         view
-            .sheetCoordinator(
-                coordinator: viewModel.sheetCoordinator,
-                onDissmis: { index in
-                    Task(priority: .high) { @MainActor [weak viewModel] in
-                        viewModel?.removeItemFromSheetCoordinator(at: index)
-                        viewModel?.removeNilItemsFromSheetCoordinator()
-                    }
-                },
-                onDidLoad: { _ in
-                    viewModel.removeNilItemsFromSheetCoordinator()
-                }
-            )
+            .sheetCoordinator(coordinator: viewModel.sheetCoordinator)
     }
     
     private func onChangeFirstView(_ value: Router.Route?) {

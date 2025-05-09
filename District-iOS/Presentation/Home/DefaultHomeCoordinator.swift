@@ -9,6 +9,7 @@ import SwiftUI
 import Coordinator
 import Home
 import Cart
+import ProductDetails
 
 public final class DefaultHomeCoordinator: Coordinator<AppRoute> {
     public override init() {

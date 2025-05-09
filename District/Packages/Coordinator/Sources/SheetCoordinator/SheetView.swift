@@ -23,79 +23,56 @@
 //
 
 import SwiftUI
+import Foundation
 
-struct SheetView<Content: View, T: SheetItemType>: View {
-    
+struct SheetView<Content: View, T: SheetItemType & Identifiable>: View {
     typealias Item = T
-    
+
     // ---------------------------------------------------------
     // MARK: Wrapper properties
     // ---------------------------------------------------------
-    
-    @Binding var items: [Item?]
-    
+
+    @Binding var items: [Item]
+
     // ---------------------------------------------------------
     // MARK: Properties
     // ---------------------------------------------------------
-    
+
     let index: Int
-    let content: ( (Int, (Item)) -> Content)
+    let content: ((Int, Item) -> Content)
     let onDismiss: ((Int) -> Void)?
     let onDidLoad: ((Int) -> Void)?
-    let transitionStyle: TransitionPresentationStyle?
-    let animated: Bool
-    
-    // ---------------------------------------------------------
-    // MARK: Constructor
-    // ---------------------------------------------------------
-    
-    init(
-        index: Int,
-        items: Binding<[Item?]>,
-        @ViewBuilder content: @escaping (Int, (Item)) -> Content,
-        transitionStyle: TransitionPresentationStyle?,
-        animated: Bool,
-        onDismiss: ((Int) -> Void)? = nil,
-        onDidLoad: ((Int) -> Void)?
-    ) {
-        self.index = index
-        self._items = items
-        self.content = content
-        self.onDismiss = onDismiss
-        self.onDidLoad = onDidLoad
-        self.transitionStyle = transitionStyle
-        self.animated = animated
-    }
-    
+
     // ---------------------------------------------------------
     // MARK: View
     // ---------------------------------------------------------
-    
+
     var body: some View {
         Group {
-            if let index = $items.indices.firstIndex(of: index) {
-                let item = $items[index]
-                
-                switch getTransitionStyle(from: index) {
-                case .fullScreenCover:
-                    fullScreenView(item: item, index: index)
-                case .sheet, .detents:
-                    sheetView(item: item, index: index)
-                default:
-                    EmptyView()
+            if let itemBinding = bindingForItem(at: index) {
+                let presentationStyle = itemBinding.wrappedValue.getPresentationStyle()
+                Group {
+                    switch presentationStyle {
+                    case .fullScreenCover:
+                        fullScreenView(item: optionalBinding(from: itemBinding), index: index)
+                    case .sheet:
+                        sheetView(item: optionalBinding(from: itemBinding), index: index)
+                    default:
+                        EmptyView()
+                    }
                 }
+                .transaction { $0.disablesAnimations = !(itemBinding.wrappedValue.isAnimated()) }
             }
         }
-        .transaction { $0.disablesAnimations = !(animated) }
     }
-    
+
     // ---------------------------------------------------------
     // MARK: Helper Views
     // ---------------------------------------------------------
-    
+
     @ViewBuilder
     private func sheetView(item: Binding<Item?>, index: Int) -> some View {
-        defaultView
+        Color.clear
             .sheet(
                 item: item,
                 onDismiss: { onDismiss?(index) },
@@ -103,10 +80,10 @@ struct SheetView<Content: View, T: SheetItemType>: View {
             )
             .onViewDidLoad { onDidLoad?(index) }
     }
-    
+
     @ViewBuilder
     private func fullScreenView(item: Binding<Item?>, index: Int) -> some View {
-        defaultView
+        Color.clear
             .fullScreenCover(
                 item: item,
                 onDismiss: { onDismiss?(index) },
@@ -114,20 +91,27 @@ struct SheetView<Content: View, T: SheetItemType>: View {
             )
             .onViewDidLoad { onDidLoad?(index) }
     }
-    
-    private var defaultView: some View {
-        Color.blue.frame(width: 0.3, height: 0.3)
+
+    // ---------------------------------------------------------
+    // MARK: Helper functions
+    // ---------------------------------------------------------
+
+    private func bindingForItem(at index: Int) -> Binding<Item>? {
+        guard items.indices.contains(index) else { return nil }
+        return Binding(
+            get: { items[index] },
+            set: { items[index] = $0 }
+        )
     }
-    
-    // ---------------------------------------------------------
-    // MARK: Helper Functions
-    // ---------------------------------------------------------
-    
-    private func getTransitionStyle(from index: Int) -> TransitionPresentationStyle? {
-        guard items.indices.contains(index) else {
-            return transitionStyle
-        }
-        
-        return items[index]?.getPresentationStyle() ?? transitionStyle
+
+    private func optionalBinding(from binding: Binding<Item>) -> Binding<Item?> {
+        Binding<Item?>(
+            get: { binding.wrappedValue },
+            set: {
+                if let value = $0 {
+                    binding.wrappedValue = value
+                }
+            }
+        )
     }
 }

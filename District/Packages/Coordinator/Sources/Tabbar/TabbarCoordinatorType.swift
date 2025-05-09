@@ -90,8 +90,6 @@ public protocol TabbarCoordinatorType: ObservableObject {
     func getCoordinatorSelected() throws -> (any CoordinatorType)
 
     func popToRoot(animated: Bool) async
-
-    @MainActor func clean() async
 }
 
 /// A type alias representing a coordinator that conforms to both `CoordinatorType` and `TabbarCoordinatorType`.

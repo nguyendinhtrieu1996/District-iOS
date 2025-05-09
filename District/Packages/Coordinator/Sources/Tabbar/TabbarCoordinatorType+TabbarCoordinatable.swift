@@ -30,7 +30,7 @@ extension TabbarCoordinatorType where Self : TabbarCoordinatable {
     ///   - values: The array of pages to set.
     ///   - currentPage: The optional current page to set.
     public func setPages(_ values: [Page], currentPage: Page? = nil) async {
-        await removeChildren()
+        children.removeAll()
         setupPages(values, currentPage: currentPage)
     }
     

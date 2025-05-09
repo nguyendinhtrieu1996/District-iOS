@@ -87,31 +87,9 @@ public protocol RouterType: ObservableObject {
     ///   - animated: A boolean value indicating whether to animate the pop action.
     @MainActor func popToRoot(animated: Bool) async
     
-    /// Pops to a specific view or coordinator in the navigation stack.
-    ///
-    /// - Parameters:
-    ///   - view: The target view or coordinator to pop to.
-    ///   - animated: A boolean value indicating whether to animate the pop action.
-    /// - Returns: A boolean value indicating whether the pop action was successful.
-    @MainActor func popToView<T>(_ view: T, animated: Bool) async -> Bool
-    
     /// Dismisses the currently presented view or coordinator.
     ///
     /// - Parameters:
     ///   - animated: A boolean value indicating whether to animate the dismissal.
     @MainActor func dismiss(animated: Bool) async
-    
-    /// Cleans up the current view or coordinator, optionally preserving the main view.
-    ///
-    /// - Parameters:
-    ///   - animated: A boolean value indicating whether to animate the cleanup process.
-    ///   - withMainView: A boolean value indicating whether to clean the main view.
-    func clean(animated: Bool, withMainView: Bool) async -> Void
-    
-    /// Closes the current view or coordinator, optionally finishing the associated flow.
-    ///
-    /// - Parameters:
-    ///   - animated: A boolean value indicating whether to animate the closing action.
-    ///   - finishFlow: A boolean value indicating whether to finish the associated flow.
-    @MainActor func close(animated: Bool, finishFlow: Bool) async -> Void
 }
